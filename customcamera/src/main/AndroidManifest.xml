@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
@@ -16,8 +17,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:largeHeap="true"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -25,9 +26,9 @@
             android:name=".CameraActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:hardwareAccelerated="false"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"
-            android:screenOrientation="landscape"/>
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
             android:name=".LicenseIndentifyCameraActivity"
@@ -35,7 +36,7 @@
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
             android:name=".AccidentCameraActivity"
@@ -43,7 +44,7 @@
             android:hardwareAccelerated="false"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <!-- hardwareAccelerated 关闭硬件加速，防止OOM
         xhe 强制设为横屏模式   configChanges防止锁屏重走oncreate    android:configChanges="orientation|screenSize|keyboardHidden" -->
     </application>

@@ -26,6 +26,7 @@ import com.car300.customcamera.vindriver.DriverLicenseHelp;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xhe.photoalbum.PhotoAlbum;
 
+import java.io.Serializable;
 import java.util.List;
 
 import rx.Observable;
@@ -154,14 +155,20 @@ public class LicenseIndentifyCameraActivity extends BaseActivity implements Came
         }
 
         if (id == btnFinish.getId()) {
-            if (btnFinish.getText().equals("确定")) {
-                //图片保存完毕后结束，回传到上一界面
-                if (mIsSaving) {
-                    ToastUtil.show(mContext, "正在处理图片");
-                    return;
-                }
-                DriverLicenseHelp.vinCallBack.path(mPhotoPath);
+            if (!btnFinish.getText().equals("确定")) {
+                setResult(RESULT_CANCELED);
+                finish();
+                return;
             }
+
+            //图片保存完毕后结束，回传到上一界面
+            if (mIsSaving) {
+                ToastUtil.show(mContext, "正在处理图片");
+                return;
+            }
+            Intent intent = new Intent();
+            intent.putExtra(CameraConstants.PHOTO_PATH, mPhotoPath);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }

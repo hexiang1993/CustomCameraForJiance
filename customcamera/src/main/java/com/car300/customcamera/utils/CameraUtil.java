@@ -51,98 +51,6 @@ public class CameraUtil {
         return mCameraUtil;
     }
 
-    /**
-     * 打开行驶证识别界面
-     *
-     * @param context
-     */
-    public void doTakeDriverCameraActivity(Context context) {
-        context.startActivity(new Intent(context, LicenseIndentifyCameraActivity.class));
-    }
-
-    /**
-     * 事故判定界面的相机
-     * @param activity
-     * @param path
-     * @param resultCallback
-     */
-    public void doTakeAccidentCamera(Activity activity, String path, final ActivityForResultCallback resultCallback){
-        Intent intent = new Intent(activity, AccidentCameraActivity.class);
-        intent.putExtra(CameraConstants.PHOTO_PATH, path);
-        RxActivityResult.with(activity)
-                .startActivityWithResult(intent)
-                .subscribe(new Subscriber<Intent>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Intent intent) {
-                        if (resultCallback != null) {
-                            resultCallback.result(intent);
-                        }
-                    }
-                });
-    }
-
-    /**
-     * 普通照片的相机
-     * @param activity
-     * @param list
-     * @param index
-     * @param isAdditional
-     * @param resultCallback
-     */
-    public void doTakeNormalCamera(Activity activity, ArrayList<PhotoInfo> list, int index, boolean isAdditional,@NonNull final ActivityForResultCallback resultCallback){
-        RxActivityResult.with(activity)
-                .startActivityWithResult(getCameraIntent(activity, list, index, isAdditional))
-                .subscribe(new Subscriber<Intent>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Intent intent) {
-                        if (resultCallback != null) {
-                            resultCallback.result(intent);
-                        }
-                    }
-                });
-    }
-
-
-    /**
-     * 普通相机界面的intent
-     *
-     * @param activity
-     * @param list
-     * @param index        当前一张的index
-     * @param isAdditional 是否是附加照片
-     */
-    public Intent getCameraIntent(Activity activity, ArrayList<PhotoInfo> list, int index, boolean isAdditional) {
-        Intent intent = new Intent(activity, CameraActivity.class);
-        intent.putExtra(CameraConstants.CURRENT_INDEX, index);
-        intent.putExtra(CameraConstants.IS_ADDITINAL_PHOTO, isAdditional);
-        intent.putParcelableArrayListExtra(CameraConstants.PHOTO_LIST, list);
-        return intent;
-    }
-
-
-    public interface ActivityForResultCallback{
-        void result(Intent data);
-    }
 
     /**
      * 打开相册
@@ -582,4 +490,5 @@ public class CameraUtil {
             return (a.height - b.height);
         }
     }
+
 }

@@ -31,58 +31,47 @@ import rx.schedulers.Schedulers;
  */
 
 public class DriverLicenseHelp {
-    public static IVinCallBack vinCallBack;
 
-    public static void indentifyVinByAliyun(final Context context, final ICallBack callBack) {
-        CameraUtil.getInstance().doTakeDriverCameraActivity(context);
-        vinCallBack = new IVinCallBack() {
-            @Override
-            public void path(final String photoPath) {
-                Observable
-                        .create(new Observable.OnSubscribe<DriverLicenseInfo>() {
-                            @Override
-                            public void call(Subscriber<? super DriverLicenseInfo> subscriber) {
-                                subscriber.onNext(requestAliApi(context, photoPath));
-                                subscriber.onCompleted();
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
-                                callBack.start();
-                            }
-                        })
-                        .subscribe(new Subscriber<DriverLicenseInfo>() {
-                            @Override
-                            public void onCompleted() {
-                                //识别结束把照片删掉
-                                FileUtil.deleteFile(photoPath);
-                                vinCallBack = null;
-                            }
+    public static void indentifyVin(final Context context, final String photoPath, final ICallBack callBack){
+        Observable
+                .create(new Observable.OnSubscribe<DriverLicenseInfo>() {
+                    @Override
+                    public void call(Subscriber<? super DriverLicenseInfo> subscriber) {
+                        subscriber.onNext(requestAliApi(context, photoPath));
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        callBack.start();
+                    }
+                })
+                .subscribe(new Subscriber<DriverLicenseInfo>() {
+                    @Override
+                    public void onCompleted() {
+                        //识别结束把照片删掉
+                        FileUtil.deleteFile(photoPath);
+                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-                                vinCallBack = null;
-                                callBack.failure("识别失败,请手动输入");
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        callBack.failure("识别失败,请手动输入");
+                    }
 
-                            @Override
-                            public void onNext(DriverLicenseInfo info) {
-                                vinCallBack = null;
-                                if (info != null && info.isSuccess() && !StringUtil.isEmpty(info.getVin()) && info.getVin().length() == 17) {
-                                    callBack.success(info);
-                                } else {
-                                    callBack.failure("识别失败,请手动输入");
-                                }
-                            }
-                        });
-            }
-        };
-
+                    @Override
+                    public void onNext(DriverLicenseInfo info) {
+                        if (info != null && info.isSuccess() && !StringUtil.isEmpty(info.getVin()) && info.getVin().length() == 17) {
+                            callBack.success(info);
+                        } else {
+                            callBack.failure("识别失败,请手动输入");
+                        }
+                    }
+                });
     }
 
     private static DriverLicenseInfo requestAliApi(Context context, String imgPath) {
