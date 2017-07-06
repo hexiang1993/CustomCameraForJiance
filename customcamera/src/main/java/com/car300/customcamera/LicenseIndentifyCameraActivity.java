@@ -22,11 +22,9 @@ import com.car300.customcamera.utils.PersistUtil;
 import com.car300.customcamera.utils.PhotoUtil;
 import com.car300.customcamera.utils.ToastUtil;
 import com.car300.customcamera.view.CameraLayout;
-import com.car300.customcamera.vindriver.DriverLicenseHelp;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xhe.photoalbum.PhotoAlbum;
 
-import java.io.Serializable;
 import java.util.List;
 
 import rx.Observable;

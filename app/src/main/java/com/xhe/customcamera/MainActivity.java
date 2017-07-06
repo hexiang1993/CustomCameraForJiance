@@ -1,16 +1,13 @@
 package com.xhe.customcamera;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
 import com.car300.customcamera.CustomCamera;
 import com.car300.customcamera.data.PhotoInfo;
-import com.car300.customcamera.utils.CameraUtil;
-import com.car300.customcamera.vindriver.DriverLicenseHelp;
-import com.car300.customcamera.vindriver.DriverLicenseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CustomCamera.doTakeVinCamera(MainActivity.this, new DriverLicenseHelp.ICallBack() {
+                        CustomCamera.doTakeVinCamera(MainActivity.this, new CustomCamera.ActivityForResultCallback() {
                             @Override
-                            public void success(DriverLicenseInfo info) {
-                                Log.d("MainActivityCamera", "成功：" + (info != null ? info.toString() : "info=null"));
-                            }
-
-                            @Override
-                            public void failure(String msg) {
-                                Log.d("MainActivityCamera", "失败" + msg);
-                            }
-
-                            @Override
-                            public void start() {
-                                Log.d("MainActivityCamera", "开始");
+                            public void result(Intent data) {
+                                String resultPath = CustomCamera.getResultPath(data);
+                                Log.d("MainActivityCamera", "照片路径：" + resultPath);
                             }
                         });
                     }

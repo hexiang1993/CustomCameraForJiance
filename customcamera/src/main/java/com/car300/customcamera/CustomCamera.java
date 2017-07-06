@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.car300.customcamera.data.CameraConstants;
 import com.car300.customcamera.data.PhotoInfo;
-import com.car300.customcamera.utils.CameraUtil;
-import com.car300.customcamera.vindriver.DriverLicenseHelp;
 import com.gengqiquan.result.RxActivityResult;
 
 import java.util.ArrayList;
@@ -44,7 +42,34 @@ public class CustomCamera {
     /**
      * 打开行驶证识别相机
      */
-    public static void doTakeVinCamera(final Activity activity, @NonNull final DriverLicenseHelp.ICallBack callBack) {
+//    public static void doTakeVinCamera(final Activity activity, @NonNull final DriverLicenseHelp.ICallBack callBack) {
+//        RxActivityResult.with(activity)
+//                .startActivityWithResult(new Intent(activity, LicenseIndentifyCameraActivity.class))
+//                .subscribe(new Subscriber<Intent>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(Intent intent) {
+//                        if (intent != null && callBack != null) {
+//                            String path = intent.getStringExtra(CameraConstants.PHOTO_PATH);
+//                            DriverLicenseHelp.indentifyVin(activity, path, callBack);
+//                        }
+//                    }
+//                });
+//    }
+
+    /**
+     * 打开行驶证识别相机
+     */
+    public static void doTakeVinCamera(final Activity activity, @NonNull final ActivityForResultCallback resultCallback) {
         RxActivityResult.with(activity)
                 .startActivityWithResult(new Intent(activity, LicenseIndentifyCameraActivity.class))
                 .subscribe(new Subscriber<Intent>() {
@@ -55,14 +80,13 @@ public class CustomCamera {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+
                     }
 
                     @Override
                     public void onNext(Intent intent) {
-                        if (intent != null && callBack != null) {
-                            String path = intent.getStringExtra(CameraConstants.PHOTO_PATH);
-                            DriverLicenseHelp.indentifyVin(activity, path, callBack);
+                        if (resultCallback != null) {
+                            resultCallback.result(intent);
                         }
                     }
                 });
